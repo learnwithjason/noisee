@@ -1,0 +1,41 @@
+:root {
+  --text-1: black;
+  --text-2: var(--gray-10);
+  --surface-1: white;
+  --surface-2: var(--gray-1);
+  --surface-3: var(--gray-2);
+  --surface-4: var(--gray-3);
+  --scrollthumb-color: white;
+
+  @media (prefers-color-scheme: dark) {
+  	--text-1: white;
+    --text-2: var(--gray-3);
+    --surface-1: black;
+    --surface-2: var(--gray-11);
+    --surface-3: var(--gray-8);
+    --surface-4: var(--gray-7);
+    --scrollthumb-color: black;
+  }
+}
+
+/* .brand-font {
+  font-family: "Climate Crisis", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "YEAR" 1979;
+} */
+
+button {
+	background: var(--text-1);
+	color: var(--surface-1);
+	font-size: var(--font-size-4);
+	padding-inline: var(--size-7);
+	padding-block: var(--size-5);
+}
+
+select {
+	background: var(--text-1);
+	color: var(--surface-1);
+}

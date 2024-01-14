@@ -1,130 +1,70 @@
 <script>
-	import DeviceList from '$components/DeviceList.svelte'
+	import 'open-props/open-props.min.css';
+	import 'open-props/normalize.min.css';
 
-	import {listAudioDevices} from '$lib/device-media.ts'
+	let room
 
-	let device
-	let devices
-
-	async function startMicrophone() {
-	  // if (state?.device?.exactId) {
-	  //   state.device = await navigator.mediaDevices
-	  //     .getUserMedia({
-	  //       audio: {
-	  //         autoGainControl: false,
-	  //         latency: 0,
-	  //         deviceId: {
-	  //           exact: state.device.exactId,
-	  //         },
-	  //       }
-	  //     })
-	  // }
-	  // else {
-	    
-	  // }
-	  device = await navigator.mediaDevices
-      .getUserMedia({audio: {
-        autoGainControl: false,
-        latency: 0,
-      }})
-
-    if (!devices)
-		  devices = await listAudioDevices()
-	}
-
-	function stopMicrophone() {
-	  device.getTracks()
-	    .forEach(track => 
-	      track.stop())
-
-	  device = null
+	function joinRoom() {
+		location.href = '/room/' + room
 	}
 </script>
 
-{#if devices?.length}
-  <DeviceList devices={devices}></DeviceList>
-{/if}
+<main>
+	<header>
+		<h1>Noisee</h1>
+		<p>See noise -- with friends!</p>
+	</header>
 
-<select id="deviceInputs" style="display: none"></select>
+	<section>
+		<input type="number" title="room" bind:value={room} placeholder="1337">
+		<button on:click={joinRoom}>JAM</button>
+	</section>
+</main>
 
-<footer>
-	{#if !device}
-	  <button on:click={startMicrophone}>allow mic</button>
-	{/if}
+<style>
+	@import 'static/theme.css';
 
-  {#if device}
-	  <button on:click={stopMicrophone}>stop</button>
-	{/if}
-</footer>
-
-<style global>
-	@import "open-props/easings.min.css";
-
-	@property --frequency {
-	  syntax: '<percentage>';
-	  initial-value: 0%;
-	  inherits: false;
+	:global(body) {
+		display: grid;
 	}
 
-  :global(html) {
-    transition: --frequency 250ms var(--ease-3);
-    
-    background-image: 
-/*       linear-gradient(45deg, lime, yellow), */
-      radial-gradient(
-        100vw circle at center, 
-        white min(var(--frequency-low, 0%), 100%), 
-        #0000 calc(min(var(--frequency-low, 0%), 100%) + 1px)
-      ),
-      radial-gradient(
-        100vw circle at center, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 calc(min(var(--frequency-high, 0%), 100%) + 1px)
-      );
-/*       linear-gradient(
-        to top right, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 calc(min(var(--frequency-high, 0%), 100%) + 1px)
-      ),
-      linear-gradient(
-        to bottom left, 
-        white min(var(--frequency-low, 0%), 100%), 
-        #0000 calc(min(var(--frequency-low, 0%), 100%) + 1px)
-      ),
-      conic-gradient(
-        from 90deg at top left, 
-        white 0 min(var(--frequency-low, 0%), 100%), 
-        #0000 0
-      ),
-      conic-gradient(
-        from 180deg at top right, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 0
-      ); */
-    background-blend-mode: difference;
-  }
+	main {
+	  display: grid;
+	  place-content: center;
+	  place-items: center;
+	  gap: var(--size-10);
+	}
 
-  :global(html) {
-    background-color: white;
-    color: hotpink;
-    display: grid;
-    height: 100%;
-    font-family: system-ui;
-    
-    @media (prefers-color-scheme: dark) {
-      background-color: black;
-    }
-  }
-  
-  :global(body) {
-    display: grid;
-    place-content: center;
-    place-items: center;
-    gap: 1rem;
-  }
-  
-  footer {
-    display: flex;
-    gap: .5rem;
-  }
+	header {
+		display: grid;
+		place-items: center;
+	}
+
+	h1 {
+		font-size: min(20vw, 15rem);
+		font-family: "Climate Crisis", var(--font-sans);
+	}
+
+	section {
+		display: flex;
+
+		& > button {
+			font-size: var(--font-size-5);
+			font-family: "Climate Crisis", var(--font-sans);
+		}
+	}
+
+	input[type="number"] {
+		padding-inline-start: var(--size-7);
+		font-size: var(--font-size-5);
+		inline-size: 10ch;
+
+		-moz-appearance:textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+		}
+	}
 </style>
