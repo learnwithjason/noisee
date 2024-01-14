@@ -1,3 +1,6 @@
 {
-	"/": []
+	"/": [],
+	"/room/[slug]": [
+		"src/routes/room/[slug]/+page.js"
+	]
 }
