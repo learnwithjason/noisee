@@ -64,7 +64,6 @@
 		display: flex;
 		gap: var(--size-10);
 		justify-content: space-between;
-		color: yellow;
 
 		& > button {
 			background: transparent;
@@ -72,7 +71,7 @@
 			line-height: 1;
 
 			&:hover {
-				color: white;
+				color: yellow;
 			}
 		}
 	}

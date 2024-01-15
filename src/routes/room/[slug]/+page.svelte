@@ -10,15 +10,18 @@
 	let device
 	let devices
 
+	let stream = {}
+	let sound_data = {}
+
 	async function startMicrophone() {
 	  // if (state?.device?.exactId) {
-	  //   state.device = await navigator.mediaDevices
+	  //   device = await navigator.mediaDevices
 	  //     .getUserMedia({
 	  //       audio: {
 	  //         autoGainControl: false,
 	  //         latency: 0,
 	  //         deviceId: {
-	  //           exact: state.device.exactId,
+	  //           exact: device.exactId,
 	  //         },
 	  //       }
 	  //     })
@@ -34,6 +37,9 @@
 
     if (!devices)
 		  devices = await listAudioDevices()
+
+		setupMediaStreams()
+		readStream()
 	}
 
 	function stopMicrophone() {
@@ -42,6 +48,54 @@
 	      track.stop())
 
 	  device = null
+	}
+
+	function setupMediaStreams() {
+		stream.audio = new AudioContext()
+  
+	  stream.micLow  = stream.audio.createMediaStreamSource(device)
+	  stream.micHigh = stream.audio.createMediaStreamSource(device)
+	  
+	  stream.analyserLow = stream.audio.createAnalyser()
+	  stream.analyserLow.fftSize = 256
+	  
+	  stream.analyserHigh = stream.audio.createAnalyser()
+	  stream.analyserHigh.fftSize = 256
+	  
+	  stream.lowpass = stream.audio.createBiquadFilter()
+	  stream.lowpass.type = 'highpass'
+	  stream.lowpass.frequency.value = 3000
+	  
+	  stream.highpass = stream.audio.createBiquadFilter()
+	  stream.highpass.type = 'highpass'
+	  stream.highpass.frequency.value = 1500
+	  
+	  stream.micLow.connect(stream.lowpass)
+	  stream.micHigh.connect(stream.highpass)
+	  
+	  stream.lowpass.connect(stream.analyserLow)
+	  stream.highpass.connect(stream.analyserHigh)
+	  
+	  sound_data.low = new Uint8Array(stream.analyserLow.frequencyBinCount)
+	  sound_data.high = new Uint8Array(stream.analyserHigh.frequencyBinCount)
+	}
+
+	function readStream() {
+		if (!sound_data?.low) return
+  
+	  const {low, high} = sound_data
+	  
+	  stream.analyserLow.getByteFrequencyData(low)
+	  stream.analyserHigh.getByteFrequencyData(high)
+	  
+	  low.value = Math.floor((low[1] + low[2]) / 512 * 100)
+	  high.value = Math.floor((high[1] + high[2]) / 512 * 100)
+	  
+	  document.firstElementChild.style.setProperty('--frequency-low', low.value +'%')
+	  document.firstElementChild.style.setProperty('--frequency-high', high.value +'%')
+
+	  if (device)
+	    requestAnimationFrame(readStream)
 	}
 </script>
 
@@ -65,15 +119,15 @@
 		  	<input type="checkbox" id="open-settings">
 		  </label>
 		{/if}
+
+	  {#if device}
+		  <button on:click={stopMicrophone}>QUIT</button>
+		{/if}
 	</nav>
 
 	<section>
 		{#if !device}
 		  <button on:click={startMicrophone}>JAM</button>
-		{/if}
-
-	  {#if device}
-		  <button on:click={stopMicrophone}>QUIT</button>
 		{/if}
 	</section>
 
@@ -108,12 +162,12 @@
 	nav {
 		display: flex;
 		gap: var(--size-3);
-		align-items: center;
 		justify-content: space-between;
 		block-size: var(--size-11);
 
 		& > label {
-			block-size: var(--size-11);
+			display: flex;
+			align-items: center;
 			padding-inline: var(--size-7);
 	    padding-block: var(--size-5);
 	    cursor: pointer;
@@ -127,9 +181,11 @@
 
 		& > header {
 			flex: 2;
+			align-self: center;
 		}
 
 		& > a {
+			align-self: center;
 			margin-inline-start: var(--size-3);
 
 			&:hover {
@@ -150,6 +206,9 @@
 
 	:global(body) {
 		display: grid;
+	}
+
+	:global(html) {
     transition: --frequency 250ms var(--ease-3);
     
     background-image: 
