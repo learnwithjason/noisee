@@ -12,12 +12,14 @@
 <main>
 	<header>
 		<h1>Noisee</h1>
-		<p>See noise -- with friends!</p>
+		<p><b>See noise</b> with friends!</p>
 	</header>
 
 	<section>
-		<input type="number" title="room" bind:value={room} placeholder="1337">
-		<button on:click={joinRoom}>JAM</button>
+		<form on:submit={joinRoom}>
+			<input type="tel" title="room number" bind:value={room} placeholder="1337" maxlength="4" required>
+			<button type="submit">JAM</button>
+		</form>
 	</section>
 </main>
 
@@ -45,7 +47,7 @@
 		font-family: "Climate Crisis", var(--font-sans);
 	}
 
-	section {
+	form {
 		display: flex;
 
 		& > button {
@@ -54,7 +56,7 @@
 		}
 	}
 
-	input[type="number"] {
+	input[type="tel"] {
 		padding-inline-start: var(--size-7);
 		font-size: var(--font-size-5);
 		inline-size: 10ch;

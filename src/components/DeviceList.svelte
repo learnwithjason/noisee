@@ -11,5 +11,8 @@
 </select>
 
 <style>
-	
+	select {
+		background: var(--surface-1);
+		color: var(--text-1);
+	}
 </style>

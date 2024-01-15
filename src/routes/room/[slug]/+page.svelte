@@ -1,12 +1,11 @@
 <script>
 	import 'open-props/open-props.min.css';
 	import 'open-props/normalize.min.css';
+
+	import Settings from '$components/Settings.svelte'
+	import {listAudioDevices} from '$lib/device-media.ts'
 	
 	export let data;
-
-	import DeviceList from '$components/DeviceList.svelte'
-
-	import {listAudioDevices} from '$lib/device-media.ts'
 
 	let device
 	let devices
@@ -58,30 +57,27 @@
 			<h1>Room {data.slug}</h1>
 			<p>0 others connected</p>
 		</header>
-		<button title="Settings">
-			<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
-				<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
-			</svg>
-		</button>
+		{#if device}
+		  <label title="Settings">
+		  	<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
+		  		<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
+		  	</svg>
+		  	<input type="checkbox" id="open-settings">
+		  </label>
+		{/if}
 	</nav>
 
 	<section>
-		{#if devices?.length}
-		  <DeviceList devices={devices}></DeviceList>
-		{/if}
-
 		{#if !device}
-		  <button on:click={startMicrophone}>Enable Microphone</button>
+		  <button on:click={startMicrophone}>JAM</button>
 		{/if}
 
 	  {#if device}
-		  <button on:click={stopMicrophone}>Stop Microphone</button>
+		  <button on:click={stopMicrophone}>QUIT</button>
 		{/if}
 	</section>
 
-	<!-- <footer>
-		footer
-	</footer> -->
+	<Settings devices={devices}></Settings>
 
 </main>
 
@@ -102,6 +98,11 @@
 	section {
 		display: grid;
 		place-content: center;
+
+		& > button {
+			font-family: "Climate Crisis", var(--font-sans);
+			font-size: var(--font-size-8);
+		}
 	}
 
 	nav {
@@ -109,6 +110,20 @@
 		gap: var(--size-3);
 		align-items: center;
 		justify-content: space-between;
+		block-size: var(--size-11);
+
+		& > label {
+			block-size: var(--size-11);
+			padding-inline: var(--size-7);
+	    padding-block: var(--size-5);
+	    cursor: pointer;
+
+	    & > input {
+	    	visibility: hidden;
+	    	height: 0;
+	    	width: 0;
+	    }
+		}
 
 		& > header {
 			flex: 2;
@@ -116,6 +131,10 @@
 
 		& > a {
 			margin-inline-start: var(--size-3);
+
+			&:hover {
+				color: var(--link);
+			}
 
 			&:not(:hover) {
 				color: var(--text-1);
