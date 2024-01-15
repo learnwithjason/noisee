@@ -2,8 +2,15 @@
 	import 'open-props/open-props.min.css';
 	import 'open-props/normalize.min.css';
 
+	import { onMount } from 'svelte'
+
 	import Settings from '$components/Settings.svelte'
+
 	import {listAudioDevices} from '$lib/device-media.ts'
+	import * as effects from '$lib/effects.ts'
+
+	import {gradient} from '$lib/store.ts'
+	import {deviceID} from '$lib/store.ts'
 	
 	export let data;
 
@@ -13,27 +20,37 @@
 	let stream = {}
 	let sound_data = {}
 
+	onMount(() => {
+		deviceID.subscribe(value => {
+			if (value == 'default') return
+			startMicrophone()
+		})
+
+		gradient.subscribe(value => {
+			document.firstElementChild.style.setProperty('--user', effects[value]())
+		})
+	})
+
 	async function startMicrophone() {
-	  // if (state?.device?.exactId) {
-	  //   device = await navigator.mediaDevices
-	  //     .getUserMedia({
-	  //       audio: {
-	  //         autoGainControl: false,
-	  //         latency: 0,
-	  //         deviceId: {
-	  //           exact: device.exactId,
-	  //         },
-	  //       }
-	  //     })
-	  // }
-	  // else {
-	    
-	  // }
-	  device = await navigator.mediaDevices
-      .getUserMedia({audio: {
-        autoGainControl: false,
-        latency: 0,
-      }})
+	  if ($deviceID) {
+	    device = await navigator.mediaDevices
+	      .getUserMedia({
+	        audio: {
+	          autoGainControl: false,
+	          latency: 0,
+	          deviceId: {
+	            exact: $deviceID,
+	          },
+	        }
+	      })
+	  }
+	  else {
+	   	device = await navigator.mediaDevices
+	      .getUserMedia({audio: {
+	        autoGainControl: false,
+	        latency: 0,
+	      }}) 
+	  }
 
     if (!devices)
 		  devices = await listAudioDevices()
@@ -100,7 +117,6 @@
 </script>
 
 <main>
-	
 	<nav>
 		<a href="/" title="Go home">
 			<svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24">
@@ -108,8 +124,8 @@
 			</svg>
 		</a>
 		<header>
-			<h1>Room {data.slug}</h1>
-			<p>0 others connected</p>
+			<h1><span class="desktop-only">Room</span> {data.slug}</h1>
+			<p>0 <span class="desktop-only">others</span></p>
 		</header>
 		{#if device}
 		  <label title="Settings">
@@ -144,6 +160,20 @@
 	  inherits: false;
 	}
 
+	:global(body) {
+		display: grid;
+	}
+
+	:global(html) {
+    transition: --frequency 250ms var(--ease-3);
+    background-blend-mode: difference;
+    background-image: 
+    	var(--user),
+    	var(--partyer-1, linear-gradient(#0000 0 0)),
+    	var(--partyer-2, linear-gradient(#0000 0 0)),
+    	var(--partyer-3, linear-gradient(#0000 0 0));
+  }
+
 	main {
 	  display: grid;
 	  grid-template-rows: auto 1fr;
@@ -155,7 +185,11 @@
 
 		& > button {
 			font-family: "Climate Crisis", var(--font-sans);
-			font-size: var(--font-size-8);
+			font-size: var(--font-size-4);
+
+			@media (width >= 720px) {
+				font-size: var(--font-size-8);
+			}
 		}
 	}
 
@@ -167,10 +201,16 @@
 
 		& > label {
 			display: flex;
+			flex-shrink: 0;
 			align-items: center;
-			padding-inline: var(--size-7);
-	    padding-block: var(--size-5);
 	    cursor: pointer;
+	    padding-inline: 0;
+	    padding-block: var(--size-2);
+
+	    @media (width >= 720px) {
+	    	padding-inline: var(--size-7);
+		    padding-block: var(--size-5);
+	    }
 
 	    & > input {
 	    	visibility: hidden;
@@ -179,6 +219,16 @@
 	    }
 		}
 
+    & > button {
+	    padding-inline: var(--size-3);
+	    padding-block: var(--size-2);
+
+	    @media (width >= 720px) {
+	    	padding-inline: var(--size-7);
+		    padding-block: var(--size-5);
+	    }
+    }
+
 		& > header {
 			flex: 2;
 			align-self: center;
@@ -186,7 +236,12 @@
 
 		& > a {
 			align-self: center;
-			margin-inline-start: var(--size-3);
+			margin-inline-start: var(--size-1);
+			flex-shrink: 0;
+
+			@media (width >= 720px) {
+				margin-inline-start: var(--size-3);
+			}
 
 			&:hover {
 				color: var(--link);
@@ -204,50 +259,11 @@
 		line-height: 1;
 	}
 
-	:global(body) {
-		display: grid;
-	}
+  .desktop-only {
+  	display: none;
 
-	:global(html) {
-    transition: --frequency 250ms var(--ease-3);
-    
-    background-image: 
-/*       linear-gradient(45deg, lime, yellow), */
-      radial-gradient(
-        100vw circle at center, 
-        white min(var(--frequency-low, 0%), 100%), 
-        #0000 calc(min(var(--frequency-low, 0%), 100%) + 1px)
-      ),
-      radial-gradient(
-        100vw circle at center, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 calc(min(var(--frequency-high, 0%), 100%) + 1px)
-      );
-/*       linear-gradient(
-        to top right, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 calc(min(var(--frequency-high, 0%), 100%) + 1px)
-      ),
-      linear-gradient(
-        to bottom left, 
-        white min(var(--frequency-low, 0%), 100%), 
-        #0000 calc(min(var(--frequency-low, 0%), 100%) + 1px)
-      ),
-      conic-gradient(
-        from 90deg at top left, 
-        white 0 min(var(--frequency-low, 0%), 100%), 
-        #0000 0
-      ),
-      conic-gradient(
-        from 180deg at top right, 
-        white min(var(--frequency-high, 0%), 100%), 
-        #0000 0
-      ); */
-    background-blend-mode: difference;
-  }
-  
-  footer {
-    display: flex;
-    gap: .5rem;
+  	@media (width >= 720px) {
+  		display: inline;
+  	}
   }
 </style>

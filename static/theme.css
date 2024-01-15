@@ -17,15 +17,6 @@
   }
 }
 
-/* .brand-font {
-  font-family: "Climate Crisis", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-    "YEAR" 1979;
-} */
-
 button {
 	background: var(--text-1);
 	color: var(--surface-1);

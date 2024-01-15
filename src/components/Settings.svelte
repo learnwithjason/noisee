@@ -1,4 +1,5 @@
 <script>
+	import {gradient} from '$lib/store.ts'
 	import DeviceList from '$components/DeviceList.svelte'
 
 	export let devices
@@ -23,15 +24,15 @@
 		<legend>Gradient</legend>
 		<label>
 			Linear
-			<input value="linear" type="radio" name="gradient">
+			<input bind:group={$gradient} value="linear" type="radio" name="gradient">
 		</label>
 		<label>
 			Radial
-			<input value="radial" type="radio" name="gradient" checked>
+			<input bind:group={$gradient} value="radial" type="radio" name="gradient" >
 		</label>
 		<label>
 			Conic
-			<input value="conic" type="radio" name="gradient">
+			<input bind:group={$gradient} value="conic" type="radio" name="gradient">
 		</label>
 	</fieldset>
 </aside>
@@ -71,7 +72,7 @@
 			line-height: 1;
 
 			&:hover {
-				color: yellow;
+				color: var(--link);
 			}
 		}
 	}

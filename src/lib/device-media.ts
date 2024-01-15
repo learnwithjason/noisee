@@ -10,24 +10,3 @@ export async function listAudioDevices() {
       }
     })
 }
-
-// export async function startMicrophone() {
-//   let device = await navigator.mediaDevices
-//     .getUserMedia({audio: {
-//       autoGainControl: false,
-//       latency: 0,
-//     }})
-
-//   devices = await listAudioDevices()
-// }
-
-// export function stopMicrophone() {
-//   state.device.getTracks()
-//     .forEach(track => 
-//       track.stop())
-  
-//   state.device = null
-//   state.devices = null
-//   state.stream = {}
-//   state.data = {}
-// }

@@ -13,6 +13,7 @@
 	<header>
 		<h1>Noisee</h1>
 		<p><b>See noise</b> with friends!</p>
+		<small>[MOTION WARNING]</small>
 	</header>
 
 	<section>
@@ -57,9 +58,26 @@
 	}
 
 	input[type="tel"] {
+		background: none;
 		padding-inline-start: var(--size-7);
 		font-size: var(--font-size-5);
 		inline-size: 10ch;
+		color: deeppink;
+		border-radius: 0px;
+		border: var(--border-size-3) solid white;
+
+		&:focus-visible {
+			outline-color: black;
+
+			@media (prefers-color-scheme: dark) {
+				outline-color: white;
+			}
+		}
+
+		@media (prefers-color-scheme: dark) {
+			color: yellow;
+			caret-color: white;
+		}
 
 		-moz-appearance:textfield;
 
