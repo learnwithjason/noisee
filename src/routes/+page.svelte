@@ -19,7 +19,7 @@
 	<section>
 		<form on:submit={joinRoom}>
 			<input type="tel" title="room number" bind:value={room} placeholder="1337" maxlength="4" required>
-			<button type="submit">JAM</button>
+			<button type="submit">KICK IT</button>
 		</form>
 	</section>
 </main>

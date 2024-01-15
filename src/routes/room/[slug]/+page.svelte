@@ -3,6 +3,7 @@
 	import 'open-props/normalize.min.css';
 
 	import { onMount } from 'svelte'
+	import { slide } from 'svelte/transition'
 
 	import Settings from '$components/Settings.svelte'
 
@@ -27,7 +28,7 @@
 		})
 
 		gradient.subscribe(value => {
-			document.firstElementChild.style.setProperty('--user', effects[value]())
+			document.firstElementChild.style.setProperty('--user', effects[value]() + ',' +effects.conic())
 		})
 	})
 
@@ -125,10 +126,13 @@
 		</a>
 		<header>
 			<h1><span class="desktop-only">Room</span> {data.slug}</h1>
-			<p>0 <span class="desktop-only">others</span></p>
+			<p>
+				<span class="partyers">0</span>
+				<span class="desktop-only">others</span>
+			</p>
 		</header>
 		{#if device}
-		  <label title="Settings">
+		  <label title="Settings" transition:slide={{ duration: 300, axis: 'y' }}>
 		  	<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
 		  		<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
 		  	</svg>
@@ -137,13 +141,22 @@
 		{/if}
 
 	  {#if device}
-		  <button on:click={stopMicrophone}>QUIT</button>
+		  <button on:click={stopMicrophone} title="Stop microphone capture" transition:slide={{ duration: 300, axis: 'y', delay: 150 }}>
+		  	<svg width="50" height="50" viewBox="0 0 24 24">
+		  		<path fill="currentColor" d="M11 13V3h2v10zm1 8q-1.85 0-3.488-.712T5.65 18.35q-1.225-1.225-1.937-2.863T3 12q0-2 .825-3.775T6.15 5.15L7.6 6.6q-1.25.95-1.925 2.375T5 12q0 2.9 2.05 4.95T12 19q2.925 0 4.963-2.05T19 12q0-1.6-.663-3.025T16.4 6.6l1.45-1.45q1.5 1.3 2.325 3.075T21 12q0 1.85-.712 3.488t-1.925 2.862q-1.213 1.225-2.85 1.938T12 21"/>
+		  	</svg>
+		  </button>
 		{/if}
 	</nav>
 
 	<section>
 		{#if !device}
-		  <button on:click={startMicrophone}>JAM</button>
+		  <button 
+		  	on:click={startMicrophone} 
+		  	transition:slide={{ duration: 300, axis: 'y' }}
+		  	title="Enable microphone to start jammin"
+		  	class="jam"
+		  >JAM</button>
 		{/if}
 	</section>
 
@@ -153,12 +166,6 @@
 
 <style>
 	@import 'static/theme.css';
-
-	@property --frequency {
-	  syntax: '<percentage>';
-	  initial-value: 0%;
-	  inherits: false;
-	}
 
 	:global(body) {
 		display: grid;
@@ -233,6 +240,8 @@
 		& > header {
 			flex: 2;
 			align-self: center;
+			display: grid;
+			gap: var(--size-2);
 		}
 
 		& > a {
@@ -254,6 +263,14 @@
 		}
 	}
 
+	.partyers {
+		border: 2px solid var(--text-2);
+		padding-inline: var(--size-2);
+		padding-block: var(--size-1);
+		border-radius: 1rem;
+		font-weight: bold;
+	}
+
 
 	h1 {
 		font-family: "Climate Crisis", var(--font-sans);
@@ -265,6 +282,18 @@
 
   	@media (width >= 720px) {
   		display: inline;
+  	}
+  }
+
+  .jam {
+  	transition: scale .5s var(--ease-squish-3);
+
+  	&:hover {
+  		scale: 1.25;
+  	}
+
+  	&:active {
+  		scale: .95;
   	}
   }
 </style>
