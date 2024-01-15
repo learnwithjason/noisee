@@ -119,7 +119,7 @@
 
 <main>
 	<nav>
-		<a href="/" title="Go home">
+		<a class="back-btn" href="/" title="Go home">
 			<svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24">
 				<path fill="currentColor" d="M20 5v14l-7-7M6 5v14H4V5m9 0v14l-7-7"/>
 			</svg>
@@ -132,7 +132,11 @@
 			</p>
 		</header>
 		{#if device}
-		  <label title="Settings" transition:slide={{ duration: 300, axis: 'y' }}>
+		  <label
+		  	class="settings-btn"
+		  	title="Settings" 
+		  	transition:slide={{ duration: 300, axis: 'y' }}
+		  >
 		  	<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
 		  		<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
 		  	</svg>
@@ -141,7 +145,12 @@
 		{/if}
 
 	  {#if device}
-		  <button on:click={stopMicrophone} title="Stop microphone capture" transition:slide={{ duration: 300, axis: 'y', delay: 150 }}>
+		  <button 
+		  	class="stop-btn"
+		  	on:click={stopMicrophone} 
+		  	title="Stop microphone capture" 
+		  	transition:slide={{ duration: 300, axis: 'y', delay: 150 }}
+		  >
 		  	<svg width="50" height="50" viewBox="0 0 24 24">
 		  		<path fill="currentColor" d="M11 13V3h2v10zm1 8q-1.85 0-3.488-.712T5.65 18.35q-1.225-1.225-1.937-2.863T3 12q0-2 .825-3.775T6.15 5.15L7.6 6.6q-1.25.95-1.925 2.375T5 12q0 2.9 2.05 4.95T12 19q2.925 0 4.963-2.05T19 12q0-1.6-.663-3.025T16.4 6.6l1.45-1.45q1.5 1.3 2.325 3.075T21 12q0 1.85-.712 3.488t-1.925 2.862q-1.213 1.225-2.85 1.938T12 21"/>
 		  	</svg>
@@ -161,6 +170,10 @@
 	</section>
 
 	<Settings devices={devices}></Settings>
+
+	{#if device}
+		<span class="live-tag" transition:slide={{ duration: 300, axis: 'y' }}>LIVE</span>
+	{/if}
 
 </main>
 
@@ -202,40 +215,10 @@
 
 	nav {
 		display: flex;
-		gap: var(--size-3);
+		gap: 1px;
 		justify-content: space-between;
 		block-size: var(--size-11);
 		backdrop-filter: blur(25px);
-
-		& > label {
-			display: flex;
-			flex-shrink: 0;
-			align-items: center;
-	    cursor: pointer;
-	    padding-inline: 0;
-	    padding-block: var(--size-2);
-
-	    @media (width >= 720px) {
-	    	padding-inline: var(--size-7);
-		    padding-block: var(--size-5);
-	    }
-
-	    & > input {
-	    	visibility: hidden;
-	    	height: 0;
-	    	width: 0;
-	    }
-		}
-
-    & > button {
-	    padding-inline: var(--size-3);
-	    padding-block: var(--size-2);
-
-	    @media (width >= 720px) {
-	    	padding-inline: var(--size-7);
-		    padding-block: var(--size-5);
-	    }
-    }
 
 		& > header {
 			flex: 2;
@@ -246,11 +229,11 @@
 
 		& > a {
 			align-self: center;
-			margin-inline-start: var(--size-1);
+			margin-inline: var(--size-1);
 			flex-shrink: 0;
 
 			@media (width >= 720px) {
-				margin-inline-start: var(--size-3);
+				margin-inline: var(--size-3);
 			}
 
 			&:hover {
@@ -262,6 +245,58 @@
 			}
 		}
 	}
+
+	.settings-btn {
+		display: flex;
+		flex-shrink: 0;
+		align-items: center;
+    cursor: pointer;
+    padding-inline: 0;
+    padding-block: var(--size-2);
+
+	  &:is(:hover, :focus-visible) {
+	    background: var(--text-1);
+	    color: var(--surface-1);
+	  }
+
+    @media (width >= 720px) {
+    	padding-inline: var(--size-7);
+	    padding-block: var(--size-5);
+    }
+
+    & > input {
+    	visibility: hidden;
+    	height: 0;
+    	width: 0;
+    }
+	}
+
+	.stop-btn {
+    padding-inline: var(--size-3);
+    padding-block: var(--size-2);
+
+    @media (width >= 720px) {
+    	padding-inline: var(--size-7);
+	    padding-block: var(--size-5);
+    }
+
+	  &:is(:hover, :focus-visible) {
+	    background: var(--red-7);
+	    color: white;
+	  }
+  }
+
+	.back-btn {
+		transition: scale .5s var(--ease-squish-3);
+
+  	&:hover {
+  		scale: 1.25;
+  	}
+
+  	&:active {
+  		scale: .95;
+  	}
+  }
 
 	.partyers {
 		border: 2px solid var(--text-2);
@@ -295,5 +330,11 @@
   	&:active {
   		scale: .95;
   	}
+  }
+
+  .live-tag {
+  	place-self: end;
+  	padding-inline: var(--size-3);
+  	padding-block: var(--size-1);
   }
 </style>

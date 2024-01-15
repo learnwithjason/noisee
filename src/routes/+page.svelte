@@ -12,15 +12,30 @@
 <main>
 	<header>
 		<h1>Noisee</h1>
-		<p><b>See noise</b> with friends!</p>
-		<small>[MOTION WARNING]</small>
+		<p><b>SEE NOISE</b> w/ FRIENDS</p>
 	</header>
 
 	<section>
 		<form on:submit={joinRoom}>
-			<input type="tel" title="room number" bind:value={room} placeholder="1337" maxlength="4" required>
+			<input 
+				type="number" 
+				title="room number" 
+				bind:value={room} 
+				placeholder="1337" 
+				max="9999" 
+				inputmode="numeric" 
+				list="radrooms" 
+				required
+			>
+			<datalist id="radrooms">
+				<option>1337</option>
+				<option>3030</option>
+				<option>13</option>
+				<option>808</option>
+			</datalist>
 			<button type="submit">KICK IT</button>
 		</form>
+		<small>[MOTION WARNING]</small>
 	</section>
 </main>
 
@@ -46,6 +61,12 @@
 	h1 {
 		font-size: min(20vw, 15rem);
 		font-family: "Climate Crisis", var(--font-sans);
+		
+		@media (prefers-reduced-motion: no-preference) {
+			animation: var(--animation-slide-in-down);
+			animation-duration: 1s;
+			animation-timing-function: var(--ease-bounce-3);
+		}
 	}
 
 	form {
@@ -54,10 +75,15 @@
 		& > button {
 			font-size: var(--font-size-5);
 			font-family: "Climate Crisis", var(--font-sans);
+
+			&:is(:hover, :focus-visible) {
+			  background: var(--surface-1);
+		    color: var(--text-1);
+			}
 		}
 	}
 
-	input[type="tel"] {
+	input[type="number"] {
 		background: none;
 		padding-inline-start: var(--size-7);
 		font-size: var(--font-size-5);
@@ -86,5 +112,11 @@
 	    -webkit-appearance: none;
 	    margin: 0;
 		}
+	}
+
+	section {
+		display: grid;
+		place-items: center;
+		gap: var(--size-3);
 	}
 </style>
