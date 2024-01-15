@@ -48,7 +48,7 @@
 		gap: var(--size-7);
 
 		padding-block: var(--size-8);
-		padding-inline: var(--size-9);
+		padding-inline: var(--size-9) var(--size-15);
 
 		background: var(--text-1);
 		color: var(--surface-1);
@@ -58,7 +58,7 @@
 	}
 
 	:global(body:has(#open-settings:checked)) aside {
-		translate: 0;
+		translate: calc(100% - var(--size-15));
 	}
 
 	header {

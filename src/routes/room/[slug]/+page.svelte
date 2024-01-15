@@ -198,6 +198,7 @@
 		gap: var(--size-3);
 		justify-content: space-between;
 		block-size: var(--size-11);
+		backdrop-filter: blur(25px);
 
 		& > label {
 			display: flex;
