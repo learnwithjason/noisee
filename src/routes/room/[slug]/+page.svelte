@@ -126,9 +126,11 @@
 		</a>
 		<header>
 			<h1><span class="desktop-only">Room</span> {data.slug}</h1>
-			<p>
+			<p class="connected-widget">
+				<svg width="24" height="24" viewBox="0 0 24 24">
+					<path fill="currentColor" d="M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z"/>
+				</svg>
 				<span class="partyers">0</span>
-				<span class="desktop-only">others</span>
 			</p>
 		</header>
 		{#if device}
@@ -236,7 +238,7 @@
 				margin-inline: var(--size-3);
 			}
 
-			&:hover {
+			&:is(:hover,:focus-visible) {
 				color: var(--link);
 			}
 
@@ -299,10 +301,6 @@
   }
 
 	.partyers {
-		border: 2px solid var(--text-2);
-		padding-inline: var(--size-2);
-		padding-block: var(--size-1);
-		border-radius: 1rem;
 		font-weight: bold;
 	}
 
@@ -323,7 +321,7 @@
   .jam {
   	transition: scale .5s var(--ease-squish-3);
 
-  	&:hover {
+  	&:is(:hover,:focus-visible) {
   		scale: 1.25;
   	}
 
@@ -336,5 +334,15 @@
   	place-self: end;
   	padding-inline: var(--size-3);
   	padding-block: var(--size-1);
+  }
+
+  .connected-widget {
+  	display: flex;
+  	gap: var(--size-2);
+  	align-items: center;
+
+  	& > svg {
+  		block-size: 1lh;
+  	}
   }
 </style>
