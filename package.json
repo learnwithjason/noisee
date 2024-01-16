@@ -31,6 +31,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"open-props": "^1.6.17"
+		"open-props": "^1.6.17",
+		"partykit": "^0.0.72",
+		"partysocket": "^0.0.20"
 	}
 }
