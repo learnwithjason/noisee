@@ -223,14 +223,21 @@
 	}
 
 	:global(html) {
-    transition: --frequency 250ms var(--ease-3);
+/*     transition: --frequency 250ms var(--ease-3); */
     background-blend-mode: difference;
     background-image: 
     	var(--user),
     	var(--partyer-0, linear-gradient(#0000 0 0)),
     	var(--partyer-1, linear-gradient(#0000 0 0)),
     	var(--partyer-2, linear-gradient(#0000 0 0)),
-    	var(--partyer-3, linear-gradient(#0000 0 0));
+    	var(--partyer-3, linear-gradient(#0000 0 0)),
+    	var(--partyer-4, linear-gradient(#0000 0 0)),
+    	var(--partyer-5, linear-gradient(#0000 0 0)),
+    	var(--partyer-6, linear-gradient(#0000 0 0)),
+    	var(--partyer-7, linear-gradient(#0000 0 0)),
+    	var(--partyer-8, linear-gradient(#0000 0 0)),
+    	var(--partyer-9, linear-gradient(#0000 0 0)),
+    	var(--partyer-10, linear-gradient(#0000 0 0));
   }
 
 	main {
