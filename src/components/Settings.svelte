@@ -143,7 +143,12 @@
 
 			&:has(:checked) {
 				font-weight: bold;
-				background: linear-gradient(to bottom, #0000, .6lh, yellow 0);
+				--underline: hotpink;
+				background: linear-gradient(to bottom, #0000, .6lh, var(--underline) 0);
+
+				@media (prefers-color-scheme: dark) {
+					--underline: yellow;
+				}
 			}
 		}
 	}
