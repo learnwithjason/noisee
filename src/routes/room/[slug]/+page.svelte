@@ -339,6 +339,10 @@
 	h1 {
 		font-family: "Climate Crisis", var(--font-sans);
 		line-height: 1;
+
+		@media (width <= 480px) {
+			font-size: var(--font-size-4);
+		}
 	}
 
   .desktop-only {
