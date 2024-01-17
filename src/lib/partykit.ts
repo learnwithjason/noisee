@@ -30,35 +30,42 @@ export async function startParty(roomNumber) {
         connections.set(payload.data.connections)
         partyers.update(value => {
           // each local partyer not in the remote list, remove
-          value = value.filter(v => payload.data.partyers.includes(v))
+          value = value.filter(v => 
+            payload.data.partyers.includes(v))
 
           // each remote partyer not in the local list, add
           payload.data.partyers.forEach(partyer => {
-            if (value.find(p => p.id === partyer)) return
-            else value.push({
+            if (value.find(p => p.id === partyer)) 
+              return
+            
+            value.push({
               id: partyer,
               gradient: 'radial',
             })
           })
 
-          console.log(value)
           return value
         })
         break
       case 'AUDIO':
         partyers.update(value => {
-          value
-            .forEach((partyer, i) => {
-              if (partyer.id !== payload.data.senderID) return
+          value.forEach((partyer, i) => {
+            if (partyer.id !== payload.data.senderID) return
 
-              partyer.low = payload.data.low
-              partyer.high = payload.data.high
+            partyer.low = payload.data.low
+            partyer.high = payload.data.high
 
-              document.firstElementChild.style
-                .setProperty(`--partyer-${i}-frequency-low`, payload.data.low +`%`)
-              document.firstElementChild.style
-                .setProperty(`--partyer-${i}-frequency-high`, payload.data.high +`%`)
-            })
+            document.firstElementChild.style
+              .setProperty(
+                `--partyer-${i}-frequency-low`, 
+                payload.data.low +`%`
+              )
+            document.firstElementChild.style
+              .setProperty(
+                `--partyer-${i}-frequency-high`, 
+                payload.data.high +`%`
+              )
+          })
 
           return value
         })

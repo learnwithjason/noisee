@@ -11,7 +11,7 @@
 	import * as effects from '$lib/effects.ts'
 	import {startParty, emitEvent} from '$lib/partykit.ts'
 
-	import {gradient, deviceID, connections, partyers} from '$lib/store.ts'
+	import {gradient, deviceID, connections} from '$lib/store.ts'
 	
 	// svelte page meta data
 	export let data;
@@ -42,7 +42,10 @@
 			emitEvent('GRADIENT', {type: value})
 
 			document.firstElementChild.style
-				.setProperty('--user', effects[value]())
+				.setProperty(
+					'--user', 
+					effects[value]()
+				)
 		})
 	})
 
@@ -125,9 +128,15 @@
 	  high.value = Math.floor((high[1] + high[2]) / 512 * 100)
 	  
 	  document.firstElementChild.style
-	  	.setProperty('--frequency-low', low.value +'%')
+	  	.setProperty(
+	  		'--frequency-low', 
+	  		low.value +'%'
+	  	)
 	  document.firstElementChild.style
-	  	.setProperty('--frequency-high', high.value +'%')
+	  	.setProperty(
+	  		'--frequency-high', 
+	  		high.value +'%'
+	  	)
 
 	  emitEvent('AUDIO', {
 	  	low: low.value, 
