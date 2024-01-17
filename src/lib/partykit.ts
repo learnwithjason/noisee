@@ -1,13 +1,19 @@
 import PartySocket from 'partysocket'
 
-import {connections} from '$lib/store.ts'
+import {connections, partyers} from '$lib/store.ts'
+import * as effects from '$lib/effects.ts'
 
-// declare const PARTYKIT_HOST: string
+let conn
 
-let pingInterval: ReturnType<typeof setInterval>
+export function emitEvent(name: String, message: Object) {
+  conn && conn.send(JSON.stringify({
+    event: name,
+    data: message,
+  }))
+}
 
-export function startParty(roomNumber) {
-  const conn = new PartySocket({
+export async function startParty(roomNumber) {
+  conn = new PartySocket({
     // host: 'http://localhost:1999/',
     host: 'https://partykit.argyleink.partykit.dev',
     room: roomNumber,
@@ -15,31 +21,58 @@ export function startParty(roomNumber) {
 
   conn.addEventListener('message', (event) => {
     const payload = JSON.parse(event.data)
-    console.info(payload)
+
+    if (payload.data.senderID === conn.id)
+      return
 
     switch(payload.event) {
       case 'COUNT':
         connections.set(payload.data.connections)
+        partyers.set(
+          payload.data.partyers
+            .map(partyer => {
+              return {
+                id: partyer,
+                gradient: 'radial',
+              }
+            })
+        )
         break
       case 'AUDIO':
-        // todo
+        partyers.update(value => {
+          value
+            .forEach((partyer, i) => {
+              if (partyer.id !== payload.data.senderID) return
+
+              partyer.low = payload.data.low
+              partyer.high = payload.data.high
+
+              document.firstElementChild.style
+                .setProperty(`--partyer-${i}-frequency-low`, payload.data.low +`%`)
+              document.firstElementChild.style
+                .setProperty(`--partyer-${i}-frequency-high`, payload.data.high +`%`)
+            })
+
+          return value
+        })
+        break
+      case 'GRADIENT':
+        partyers.update(value => {
+          value
+            .forEach((partyer, i) => {
+              if (partyer.id !== payload.data.senderID) return
+
+              partyer.gradient = payload.data.type
+
+              document.firstElementChild.style
+                .setProperty('--partyer-'+i, effects[payload.data.type]('partyer-'+i+'-'))
+            })
+
+          return value
+        })
+
         break
     }
-  })
-
-  // conn.addEventListener('connections', (event) => {
-  //   console.log(`Connections -> ${event.data}`)
-  //   connections.set(event.data)
-  // })
-
-  conn.addEventListener('open', () => {
-    // console.log('Connected!')
-    console.log('Sending a ping every 2 seconds...')
-
-    clearInterval(pingInterval)
-    pingInterval = setInterval(() => {
-      conn.send('ping')
-    }, 1000)
   })
 
   return conn

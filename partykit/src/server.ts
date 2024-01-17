@@ -2,7 +2,7 @@ import type * as Party from "partykit/server";
 
 export default class Server implements Party.Server {
   constructor(readonly room: Party.Room) {
-    this.connections = {}
+    this.rooms = {}
   }
 
   emitEvent(name: String, message: Object) {
@@ -13,43 +13,44 @@ export default class Server implements Party.Server {
   }
 
   onConnect(conn: Party.Connection, ctx: Party.ConnectionContext) {
-    console.log(
-      `Connected:
-        id: ${conn.id}
-        room: ${this.room.id}
-        url: ${new URL(ctx.request.url).pathname}`
-    );
+    console.log(`Connected to ${this.room.id}`)
+    console.log(this.rooms)
 
-    if (!this.connections[this.room.id])
-      this.connections[this.room.id] = 0
+    let room = this.rooms[this.room.id]
 
-    this.connections[this.room.id]++
+    if (!room) {
+      room = []
+      this.rooms[this.room.id] = room
+    }
+
+    room.push(conn.id)
 
     this.emitEvent('COUNT', {
-      connections: this.connections[this.room.id]
+      connections: room.length,
+      partyers: room,
     })
   }
 
   onClose(conn: Party.Connection, ctx: Party.ConnectionContext) {
-    console.log(
-      `Disconnected:
-        id: ${conn.id}
-        room: ${this.room.id}`
-    );
+    console.log(`Disconnected to ${this.room.id}`)
+    const room = this.rooms[this.room.id]
 
-    this.connections[this.room.id]--
+    const index = room.indexOf(conn.id);
+    if (index !== -1)
+      room.splice(index, 1)
     
     this.emitEvent('COUNT', {
-      connections: this.connections[this.room.id]
+      connections: room.length,
+      partyers: room,
     })
   }
 
   onMessage(message: string, sender: Party.Connection) {
-    console.log(`connection ${sender.id} sent message: ${message}`);
+    const payload = JSON.parse(message)
 
-    this.emitEvent('AUDIO', {
+    this.emitEvent(payload.event, {
       senderID: sender.id,
-      frequency: message,
+      ...payload.data,
     })
   }
 }

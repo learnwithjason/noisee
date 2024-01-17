@@ -9,10 +9,11 @@
 
 	import {listAudioDevices} from '$lib/device-media.ts'
 	import * as effects from '$lib/effects.ts'
-	import {startParty} from '$lib/partykit.ts'
+	import {startParty, emitEvent} from '$lib/partykit.ts'
 
-	import {gradient, deviceID, connections} from '$lib/store.ts'
+	import {gradient, deviceID, connections, partyers} from '$lib/store.ts'
 	
+	// svelte page meta data
 	export let data;
 
 	let device
@@ -23,16 +24,21 @@
 
 	let party
 
-	onMount(() => {
-		party = startParty(data.slug)
+	onMount(async () => {
+		// PARTY
+		party = await startParty(data.slug)
 
+		// CLIENT
 		deviceID.subscribe(value => {
 			if (value == 'default') return
 			startMicrophone()
 		})
 
 		gradient.subscribe(value => {
-			document.firstElementChild.style.setProperty('--user', effects[value]() + ',' +effects.conic())
+			emitEvent('GRADIENT', {type: value})
+
+			document.firstElementChild.style
+				.setProperty('--user', effects[value]())
 		})
 	})
 
@@ -113,8 +119,15 @@
 	  low.value = Math.floor((low[1] + low[2]) / 512 * 100)
 	  high.value = Math.floor((high[1] + high[2]) / 512 * 100)
 	  
-	  document.firstElementChild.style.setProperty('--frequency-low', low.value +'%')
-	  document.firstElementChild.style.setProperty('--frequency-high', high.value +'%')
+	  document.firstElementChild.style
+	  	.setProperty('--frequency-low', low.value +'%')
+	  document.firstElementChild.style
+	  	.setProperty('--frequency-high', high.value +'%')
+
+	  emitEvent('AUDIO', {
+	  	low: low.value, 
+	  	high: high.value,
+	  })
 
 	  if (device)
 	    requestAnimationFrame(readStream)
@@ -195,6 +208,7 @@
     background-blend-mode: difference;
     background-image: 
     	var(--user),
+    	var(--partyer-0, linear-gradient(#0000 0 0)),
     	var(--partyer-1, linear-gradient(#0000 0 0)),
     	var(--partyer-2, linear-gradient(#0000 0 0)),
     	var(--partyer-3, linear-gradient(#0000 0 0));
