@@ -44,6 +44,7 @@
 
 	:global(body) {
 		display: grid;
+		min-block-size: 100lvh;
 	}
 
 	main {
