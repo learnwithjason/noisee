@@ -43,7 +43,7 @@
 	})
 
 	async function startMicrophone() {
-	  if ($deviceID) {
+	  if ($deviceID !== 'default') {
 	    device = await navigator.mediaDevices
 	      .getUserMedia({
 	        audio: {
