@@ -28,6 +28,10 @@
 		// PARTY
 		party = await startParty(data.slug)
 
+		connections.subscribe(value => {
+			emitEvent('GRADIENT', {type: $gradient})
+		})
+
 		// CLIENT
 		deviceID.subscribe(value => {
 			if (value == 'default') return
@@ -68,6 +72,7 @@
 
 		setupMediaStreams()
 		readStream()
+		emitEvent('GRADIENT', {type: $gradient})
 	}
 
 	function stopMicrophone() {

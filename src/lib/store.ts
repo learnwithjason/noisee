@@ -4,4 +4,4 @@ export const deviceID = writable('default')
 export const gradient = writable('radial')
 
 export const connections = writable(0)
-export const partyers = writable({})
+export const partyers = writable([])

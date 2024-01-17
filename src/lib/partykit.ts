@@ -28,15 +28,22 @@ export async function startParty(roomNumber) {
     switch(payload.event) {
       case 'COUNT':
         connections.set(payload.data.connections)
-        partyers.set(
-          payload.data.partyers
-            .map(partyer => {
-              return {
-                id: partyer,
-                gradient: 'radial',
-              }
+        partyers.update(value => {
+          // each local partyer not in the remote list, remove
+          value = value.filter(v => payload.data.partyers.includes(v))
+
+          // each remote partyer not in the local list, add
+          payload.data.partyers.forEach(partyer => {
+            if (value.find(p => p.id === partyer)) return
+            else value.push({
+              id: partyer,
+              gradient: 'radial',
             })
-        )
+          })
+
+          console.log(value)
+          return value
+        })
         break
       case 'AUDIO':
         partyers.update(value => {
@@ -70,7 +77,6 @@ export async function startParty(roomNumber) {
 
           return value
         })
-
         break
     }
   })
