@@ -205,9 +205,12 @@
 <style>
 	@import 'static/theme.css';
 
+	:global(html) {
+		min-block-size: 100lvh;
+	}
+
 	:global(body) {
 		display: grid;
-	  min-block-size: 100lvh;
 	}
 
 	:global(html) {
