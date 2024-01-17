@@ -15,5 +15,6 @@
 	select {
 		background: var(--surface-1);
 		color: var(--text-1);
+		max-inline-size: 50vw;
 	}
 </style>

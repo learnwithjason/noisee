@@ -17,6 +17,10 @@
   }
 }
 
+body {
+  min-block-size: 100lvh;
+}
+
 button {
 	background: var(--text-1);
 	color: var(--surface-1);

@@ -57,11 +57,11 @@
 		display: grid;
 		place-items: center;
 
-		& > p {
+		/* & > p {
 			@media (prefers-reduced-motion: no-preference) {
 				animation: var(--animation-float);
 			}
-		}
+		} */
 	}
 
 	h1 {
@@ -73,10 +73,6 @@
 			animation-duration: 1s;
 			animation-timing-function: var(--ease-bounce-3);
 		} */
-
-		@media (prefers-reduced-motion: no-preference) {
-			animation: var(--animation-float);
-		}
 	}
 
 	form {

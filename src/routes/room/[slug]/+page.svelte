@@ -157,6 +157,7 @@
 		</header>
 		{#if device}
 		  <label
+			  tabindex="0"
 		  	class="settings-btn"
 		  	title="Settings" 
 		  	transition:slide={{ duration: 300, axis: 'y' }}
@@ -297,6 +298,7 @@
 	}
 
 	.stop-btn {
+		flex-shrink: 0;
     padding-inline: var(--size-3);
     padding-block: var(--size-2);
 
@@ -313,6 +315,8 @@
 
 	.back-btn {
 		transition: scale .5s var(--ease-squish-3);
+		aspect-ratio: 1;
+		border-radius: var(--radius-round);
 
   	&:hover {
   		scale: 1.25;
