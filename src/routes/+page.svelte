@@ -56,16 +56,26 @@
 	header {
 		display: grid;
 		place-items: center;
+
+		& > p {
+			@media (prefers-reduced-motion: no-preference) {
+				animation: var(--animation-float);
+			}
+		}
 	}
 
 	h1 {
 		font-size: min(20vw, 15rem);
 		font-family: "Climate Crisis", var(--font-sans);
 		
-		@media (prefers-reduced-motion: no-preference) {
+		/* @media (prefers-reduced-motion: no-preference) {
 			animation: var(--animation-slide-in-down);
 			animation-duration: 1s;
 			animation-timing-function: var(--ease-bounce-3);
+		} */
+
+		@media (prefers-reduced-motion: no-preference) {
+			animation: var(--animation-float);
 		}
 	}
 
@@ -90,7 +100,7 @@
 		inline-size: 10ch;
 		color: deeppink;
 		border-radius: 0px;
-		border: var(--border-size-3) solid white;
+		border: var(--border-size-3) solid var(--text-1);
 
 		&:focus-visible {
 			outline-color: black;
