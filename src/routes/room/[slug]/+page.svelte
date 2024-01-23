@@ -264,7 +264,10 @@
 		gap: 1px;
 		justify-content: space-between;
 		block-size: var(--size-11);
-/* 		backdrop-filter: blur(25px); */
+
+		@media (prefers-color-scheme: dark) {
+			mix-blend-mode: difference;
+		}
 
 		& > header {
 			flex: 2;
