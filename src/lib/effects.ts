@@ -9,6 +9,16 @@ export function linear(prefix = '') {
       to bottom left, 
       white min(var(--${prefix}frequency-low, 0%), 100%), 
       #0000 calc(min(var(--${prefix}frequency-low, 0%), 100%) + 1px)
+    )`,
+    `linear-gradient(
+      to top left, 
+      white min(var(--${prefix}frequency-low, 0%), 100%), 
+      #0000 calc(min(var(--${prefix}frequency-low, 0%), 100%) + 1px)
+    )`,
+    `linear-gradient(
+      to bottom right, 
+      white min(var(--${prefix}frequency-low, 0%), 100%), 
+      #0000 calc(min(var(--${prefix}frequency-low, 0%), 100%) + 1px)
     )`
 	]
 }
@@ -16,12 +26,22 @@ export function linear(prefix = '') {
 export function radial(prefix = '') {
 	return [`
 		radial-gradient(
-      100vw circle at center, 
+      circle at center, 
       white min(var(--${prefix}frequency-low, 0%), 100%), 
       #0000 calc(min(var(--${prefix}frequency-low, 0%), 100%) + 1px)
     )`,`
 		radial-gradient(
-      100vw circle at center, 
+      circle at center, 
+      white min(var(--${prefix}frequency-high, 0%), 100%), 
+      #0000 calc(min(var(--${prefix}frequency-high, 0%), 100%) + 1px)
+    )`,`
+    radial-gradient(
+      circle at top right, 
+      white min(var(--${prefix}frequency-high, 0%), 100%), 
+      #0000 calc(min(var(--${prefix}frequency-high, 0%), 100%) + 1px)
+    )`,`
+    radial-gradient(
+      circle at bottom left, 
       white min(var(--${prefix}frequency-high, 0%), 100%), 
       #0000 calc(min(var(--${prefix}frequency-high, 0%), 100%) + 1px)
     )`
@@ -31,13 +51,13 @@ export function radial(prefix = '') {
 export function conic(prefix = '') {
 	return [`
 		conic-gradient(
-      from 90deg at top left, 
+      from 130deg at top left, 
       white 0 min(var(--${prefix}frequency-low, 0%), 100%), 
       #0000 0
     )`,`
 		conic-gradient(
-      from 180deg at top right, 
-      white min(var(--${prefix}frequency-high, 0%), 100%), 
+      from 320deg at bottom right, 
+      white min(var(--${prefix}frequency-low, 0%), 100%), 
       #0000 0
     )`
   ]

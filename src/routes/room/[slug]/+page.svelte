@@ -264,7 +264,7 @@
 		gap: 1px;
 		justify-content: space-between;
 		block-size: var(--size-11);
-		backdrop-filter: blur(25px);
+/* 		backdrop-filter: blur(25px); */
 
 		& > header {
 			flex: 2;
