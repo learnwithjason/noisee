@@ -146,6 +146,10 @@
 	  if (device)
 	    requestAnimationFrame(readStream)
 	}
+
+	function openSettings() {
+		settings.scrollIntoViewIfNeeded()
+	}
 </script>
 
 <main>
@@ -165,17 +169,16 @@
 			</p>
 		</header>
 		{#if device}
-		  <label
-			  tabindex="0"
-		  	class="settings-btn"
-		  	title="Settings" 
-		  	transition:slide={{ duration: 300, axis: 'y' }}
-		  >
-		  	<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
+			<button 
+				class="settings-btn"
+				on:click={openSettings} 
+				title="Settings" 
+				transition:slide={{ duration: 300, axis: 'y' }}
+			>
+				<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
 		  		<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
 		  	</svg>
-		  	<input type="checkbox" id="open-settings">
-		  </label>
+			</button>
 		{/if}
 
 	  {#if device}
@@ -216,6 +219,7 @@
 
 	:global(html) {
 		min-block-size: 100lvh;
+		scroll-snap-type: x mandatory;
 	}
 
 	:global(body) {
@@ -223,7 +227,6 @@
 	}
 
 	:global(html) {
-/*     transition: --frequency 250ms var(--ease-3); */
     background-blend-mode: difference;
     background-image: 
     	var(--user),
@@ -243,11 +246,17 @@
 	main {
 	  display: grid;
 	  grid-template-rows: auto 1fr;
+	  grid-template-columns: 100vw auto;
+		scroll-snap-align: start;
 	}
 
 	section {
 		display: grid;
 		place-content: center;
+		grid-column: 1;
+    grid-row: 2;
+		position: sticky;
+    left: 0;
 
 		& > button {
 			font-family: "Climate Crisis", var(--font-sans);
@@ -260,10 +269,16 @@
 	}
 
 	nav {
+		position: sticky;
+    left: 0;
 		display: flex;
+		z-index: var(--layer-1);
+
 		gap: 1px;
 		justify-content: space-between;
 		block-size: var(--size-11);
+		grid-column: 1;
+    grid-row: 2;
 
 		@media (prefers-color-scheme: dark) {
 			mix-blend-mode: difference;
@@ -299,9 +314,10 @@
 		display: flex;
 		flex-shrink: 0;
 		align-items: center;
-    cursor: pointer;
     padding-inline: 0;
     padding-block: var(--size-2);
+    background: transparent;
+    color: var(--text-1);
 
 	  &:is(:hover, :focus-visible) {
 	    background: var(--text-1);
