@@ -5,11 +5,17 @@
 	export let devices = []
 </script>
 
-<select bind:value={$deviceID}>
-	{#each devices as { id, name }, i}
-		<option value={id}>{name}</option>
-	{/each}
-</select>
+{#if devices.length}
+  <select bind:value={$deviceID}>
+		{#each devices as { id, name }, i}
+			<option value={id}>{name}</option>
+		{/each}
+	</select>
+{/if}
+{#if !devices.length}
+	<p>No device connected.</p>
+	<p><b>👉 JAM!</b></p>
+{/if}
 
 <style>
 	select {
