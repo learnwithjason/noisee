@@ -5,11 +5,11 @@
 	export let devices
 
 	function close() {
-		window.scrollTo(0,0)
+		document.querySelector('#open-settings').checked = false
 	}
 </script>
 
-<aside id="settings">
+<aside>
 	<header>
 		<h2>Settings</h2>
 		<button on:click={close}>
@@ -46,9 +46,9 @@
 
 <style>
 	aside {
-		scroll-snap-align: end;
-		grid-column: 2;
-    grid-row: span 2;
+		position: fixed;
+		inset-inline: auto 0;
+		inset-block: 0 0;
 
 		display: grid;
 		place-content: start;
@@ -59,10 +59,20 @@
 
 		background: var(--text-1);
 		color: var(--surface-1);
-		z-index: var(--layer-2);
+
+		transition: translate .5s var(--ease-spring-3);
+		translate: 100%;
 
 		@media (width <= 600px) {
 			padding-inline: var(--size-6) var(--size-8);
+		}
+	}
+
+	:global(body:has(#open-settings:checked)) aside {
+		translate: var(--size-10);
+
+		@media (width <= 600px) {
+			translate: var(--size-6);
 		}
 	}
 
