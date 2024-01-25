@@ -7,6 +7,12 @@
 			"$components/*": [
 				"../src/components/*"
 			],
+			"$icons": [
+				"../src/icons"
+			],
+			"$icons/*": [
+				"../src/icons/*"
+			],
 			"$lib": [
 				"../src/lib"
 			],

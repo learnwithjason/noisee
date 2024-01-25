@@ -7,6 +7,11 @@
 
 	import Settings from '$components/Settings.svelte'
 
+	import IconPrevious from '$icons/Previous.svelte'
+	import IconUser from '$icons/User.svelte'
+	import IconSettings from '$icons/Settings.svelte'
+	import IconPower from '$icons/Power.svelte'
+
 	import {listAudioDevices} from '$lib/device-media.ts'
 	import * as effects from '$lib/effects.ts'
 	import {startParty, emitEvent} from '$lib/partykit.ts'
@@ -151,16 +156,12 @@
 <main>
 	<nav>
 		<a class="back-btn" href="/" title="Go home">
-			<svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24">
-				<path fill="currentColor" d="M20 5v14l-7-7M6 5v14H4V5m9 0v14l-7-7"/>
-			</svg>
+			<IconPrevious/>
 		</a>
 		<header>
 			<h1><span class="desktop-only">Room</span> {data.slug}</h1>
 			<p class="connected-widget">
-				<svg width="24" height="24" viewBox="0 0 24 24">
-					<path fill="currentColor" d="M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12m-8 8v-2.8q0-.85.438-1.562T5.6 14.55q1.55-.775 3.15-1.162T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20z"/>
-				</svg>
+				<IconUser/>
 				<span class="partyers">{$connections}</span>
 			</p>
 		</header>
@@ -171,9 +172,7 @@
 		  	title="Settings" 
 		  	transition:slide={{ duration: 300, axis: 'y' }}
 		  >
-		  	<svg aria-hidden="true" width="60" height="60" viewBox="0 0 256 256">
-		  		<path fill="currentColor" d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"/>
-		  	</svg>
+		  	<IconSettings/>
 		  	<input type="checkbox" id="open-settings">
 		  </label>
 		{/if}
@@ -185,9 +184,7 @@
 		  	title="Stop microphone capture" 
 		  	transition:slide={{ duration: 300, axis: 'y', delay: 150 }}
 		  >
-		  	<svg width="50" height="50" viewBox="0 0 24 24">
-		  		<path fill="currentColor" d="M11 13V3h2v10zm1 8q-1.85 0-3.488-.712T5.65 18.35q-1.225-1.225-1.937-2.863T3 12q0-2 .825-3.775T6.15 5.15L7.6 6.6q-1.25.95-1.925 2.375T5 12q0 2.9 2.05 4.95T12 19q2.925 0 4.963-2.05T19 12q0-1.6-.663-3.025T16.4 6.6l1.45-1.45q1.5 1.3 2.325 3.075T21 12q0 1.85-.712 3.488t-1.925 2.862q-1.213 1.225-2.85 1.938T12 21"/>
-		  	</svg>
+		  	<IconPower/>
 		  </button>
 		{/if}
 	</nav>
