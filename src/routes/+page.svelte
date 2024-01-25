@@ -42,8 +42,35 @@
 <style>
 	@import 'static/theme.css';
 
+	@property --frequency-low {
+	  syntax: '<percentage>';
+	  initial-value: 0%;
+	  inherits: false;
+	}
+
+	@property --frequency-high {
+	  syntax: '<percentage>';
+	  initial-value: 0%;
+	  inherits: false;
+	}
+
+	@keyframes low {
+		50% {
+			--frequency-low: 7%;
+		}
+	}
+
+	@keyframes high {
+		50% {
+			--frequency-high: 12%;
+		}
+	}
+
 	:global(html) {
 		min-block-size: 100lvh;
+		/* animation: 
+			low 2s var(--ease-bounce-5) infinite,
+			high 2s var(--ease-bounce-5) infinite; */
 	}
 
 	:global(body) {
