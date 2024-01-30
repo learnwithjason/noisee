@@ -37,8 +37,8 @@ export function radial(prefix = '') {
     )`,`
     radial-gradient(
       circle at top right, 
-      white min(var(--${prefix}frequency-high, 0%), 100%), 
-      #0000 calc(min(var(--${prefix}frequency-high, 0%), 100%) + 1px)
+      white min(var(--${prefix}frequency-low, 0%), 100%), 
+      #0000 calc(min(var(--${prefix}frequency-low, 0%), 100%) + 1px)
     )`,`
     radial-gradient(
       circle at bottom left, 

@@ -11,11 +11,19 @@
 
 <main>
 	<header>
-		<h1>Noisee</h1>
+		<h1>
+			<b>N</b>
+			<b>o</b>
+			<b>i</b>
+			<b>s</b>
+			<b>e</b>
+			<b>e</b>
+		</h1>
 		<p><b>SEE NOISE</b> w/ FRIENDS</p>
 	</header>
 
 	<section>
+		<p>start or join a room</p>
 		<form on:submit={joinRoom}>
 			<input 
 				type="number" 
@@ -33,7 +41,7 @@
 				<option>13</option>
 				<option>808</option>
 			</datalist>
-			<button type="submit">KICK IT</button>
+			<button type="submit">JAM</button>
 		</form>
 		<small>[MOTION WARNING]</small>
 	</section>
@@ -44,33 +52,48 @@
 
 	@property --frequency-low {
 	  syntax: '<percentage>';
-	  initial-value: 0%;
+	  initial-value: 25%;
 	  inherits: false;
 	}
 
 	@property --frequency-high {
 	  syntax: '<percentage>';
-	  initial-value: 0%;
+	  initial-value: 33%;
 	  inherits: false;
 	}
 
 	@keyframes low {
 		50% {
-			--frequency-low: 7%;
+			--frequency-low: 10%;
 		}
 	}
 
 	@keyframes high {
 		50% {
-			--frequency-high: 12%;
+			--frequency-high: 20%;
 		}
 	}
 
-	:global(html) {
+	:global(:root) {
+		--text-1: white;
+    --text-2: var(--gray-3);
+    --surface-1: black;
+    --link: yellow;
 		min-block-size: 100lvh;
-		/* animation: 
-			low 2s var(--ease-bounce-5) infinite,
-			high 2s var(--ease-bounce-5) infinite; */
+		background-image: 
+			radial-gradient(
+	      circle at top right, 
+	      white min(var(--frequency-low), 100%), 
+	      #0000 calc(min(var(--frequency-low), 100%) + 1px)
+	    ),
+	    radial-gradient(
+	      circle at bottom left, 
+	      white min(var(--frequency-high), 100%), 
+	      #0000 calc(min(var(--frequency-high), 100%) + 1px)
+	    );
+		animation: 
+			low 5s var(--ease-spring-5) 20s infinite,
+			high 5s var(--ease-spring-5) 20s infinite;
 	}
 
 	:global(body) {
@@ -78,6 +101,7 @@
 	}
 
 	main {
+		mix-blend-mode: difference;
 	  display: grid;
 	  place-content: center;
 	  place-items: center;
@@ -88,26 +112,64 @@
 		display: grid;
 		place-items: center;
 
-		/* & > p {
-			@media (prefers-reduced-motion: no-preference) {
-				animation: var(--animation-float);
-			}
-		} */
+		& > p {
+			opacity: 0;
+			color: var(--link);
+			animation: var(--animation-fade-in-bloom) forwards;
+			animation-delay: 1s;
+			animation-duration: .5s;
+		}
 	}
 
 	h1 {
+		display: flex;
 		font-size: min(20vw, 15rem);
 		font-family: "Climate Crisis", var(--font-sans);
 		
-		/* @media (prefers-reduced-motion: no-preference) {
-			animation: var(--animation-slide-in-down);
-			animation-duration: 1s;
-			animation-timing-function: var(--ease-bounce-3);
-		} */
+		@media (prefers-reduced-motion: no-preference) {
+			& > b {
+				opacity: 0;
+				animation-duration: .8s;
+				animation-delay: calc(var(--i) * 100ms);
+				animation-fill-mode: forwards;
+				animation-name: slide-in-down, fade-in-bloom;
+				animation-timing-function: var(--ease-bounce-3);
+			}
+
+			& > b:nth-child(1) {
+				--i: 3;
+			}
+
+			& > b:nth-child(2) {
+				--i: 1;
+			}
+
+			& > b:nth-child(3) {
+				--i: 2;
+			}
+
+			& > b:nth-child(4) {
+				--i: 3;
+				animation-duration: 1.2s;
+			}
+
+			& > b:nth-child(5) {
+				--i: 4;
+				animation-duration: 1.1s;
+			}
+
+			& > b:nth-child(6) {
+				--i: 3;
+			}
+		}
 	}
 
 	form {
 		display: flex;
+
+		@media (max-width: 400px) {
+			flex-direction: column;
+		}
 
 		& > button {
 			font-size: var(--font-size-5);
@@ -128,6 +190,11 @@
 		color: deeppink;
 		border-radius: 0px;
 		border: var(--border-size-3) solid var(--text-1);
+
+		@media (max-width: 400px) {
+			inline-size: initial;
+			font-size: var(--font-size-3);
+		}
 
 		&:focus-visible {
 			outline-color: black;
@@ -155,5 +222,9 @@
 		display: grid;
 		place-items: center;
 		gap: var(--size-3);
+
+		& > p:first-child {
+			color: var(--text-2);
+		}
 	}
 </style>

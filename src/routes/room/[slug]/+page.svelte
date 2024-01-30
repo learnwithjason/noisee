@@ -196,7 +196,7 @@
 		  	transition:slide={{ duration: 300, axis: 'y' }}
 		  	title="Enable microphone to start jammin"
 		  	class="jam"
-		  >JAM</button>
+		  >Enable Mic</button>
 		{/if}
 	</section>
 
