@@ -1,13 +1,11 @@
+![noisee](https://github.com/learnwithjason/noisee/assets/1134620/45bef29f-bf1f-4fee-8f80-f792be9993f2)
 
+# See noise with friends
+rad gradients + [partykit](https://www.partykit.io/) + [mic input](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/mediaDevices)
 
-# Noisee
-See noise with friends
+<br>
 
-- rad gradients
-- partykit
-- mic input
-
-Kicked off with [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+> Kicked off with [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
 ## Local dev
 
